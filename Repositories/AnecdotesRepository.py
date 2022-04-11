@@ -52,6 +52,23 @@ class AnecdotesRepository:
                 """, (anec.text, anec.rating, anec.in_queue, anec.id)
             )
 
+    def get_random(self):
+        output = None
+        with sqlite3.connect(self.connection_string) as con:
+            cursor = con.cursor()
+
+            while output is None:
+                output = cursor.execute(
+                    """
+                    SELECT * FROM Anecdotes
+                    WHERE rowid = (ABS(random()) % (SELECT (SELECT MAX(rowid) FROM Anecdotes)+1));
+                    """
+                ).fetchall()
+                if len(output) == 0:
+                    output = None
+            output = output[0]
+        return Anecdote.build_from_tuple(output)
+
     def get_by_id(self, id):
         output = None
         with sqlite3.connect(self.connection_string) as con:
