@@ -25,13 +25,13 @@ def get_random_anecdote():
 
 
 @app.route("/anecdote/rand/all", methods=["GET"])
-def get_random_anecdote():
+def get_all_anecdote():
     anec = anecdote_repository.get_random()
     return anec.toJSON(), 200, {'Content-Type': 'text/json; charset=utf-8'}
 
 
 @app.route("/anecdote/rand/unverified", methods=["GET"])
-def get_random_anecdote():
+def get_unverified_anecdote():
     anec = anecdote_repository.get_random_unverified()
     return anec.toJSON(), 200, {'Content-Type': 'text/json; charset=utf-8'}
 
