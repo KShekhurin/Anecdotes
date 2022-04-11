@@ -15,12 +15,13 @@ def get_anecdote_by_id(id):
     if anec is None:
         return "There is no such a id", 404
 
-    return anec.toJSON(), 200
+    return anec.toJSON(), 200, {'Content-Type': 'text/json; charset=utf-8'}
 
 
 @app.route("/anecdote/rand", methods=["GET"])
 def get_random_anecdote():
-    pass
+    anec = anecdote_repository.get_random()
+    return anec.toJSON(), 200, {'Content-Type': 'text/json; charset=utf-8'}
 
 
 @app.route("/anecdote/", methods=["PUT"])
@@ -43,6 +44,7 @@ def add_to_list():
     return "Ok", 200
 
 
-@app.route("/anecdote/", methods=["DELETE"])
-def delete_from_list_by_id():
-    pass
+@app.route("/anecdote/<int:id>", methods=["DELETE"])
+def delete_from_list_by_id(id):
+    anecdote_repository.delete_by_id(id)
+    return "", 200
