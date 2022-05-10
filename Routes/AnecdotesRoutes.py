@@ -1,11 +1,16 @@
 from flask import request
+import psycopg2
 
 from main import app
-from Repositories import AnecdotesRepository
+from Repositories import AnecdotesRepositoryPost
 from Models import Anecdote
 
 
-anecdote_repository = AnecdotesRepository("../db.db")
+anecdote_repository = AnecdotesRepositoryPost(
+    psycopg2.connect(
+        database="Anecdotes", user="postgres", password="postgres", host="localhost", port=5432
+    )
+)
 
 
 @app.route("/anecdote/<int:id>", methods=["GET"])
